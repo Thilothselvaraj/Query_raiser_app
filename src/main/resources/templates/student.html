@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Query Module</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; }
+        .navbar { background: #343a40; padding: 15px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .navbar a { color: #f8f9fa; text-decoration: none; margin-left: 20px; }
+        .container { background: white; max-width: 600px; margin: 40px auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #17a2b8; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div><strong>Student Workflow Panel</strong></div>
+    <div><a href="/home">Home Dashboard</a></div>
+</div>
+<div class="container">
+    <h2>Raise Student System Query</h2>
+    <form th:action="@{/raiseQuery}" method="post">
+        <div class="form-group">
+            <label>Target Advisor Type</label>
+            <select name="targetType" required>
+                <option value="team lead">Team Lead</option>
+                <option value="management">Management</option>
+                <option value="training team lead">Training Team Lead</option>
+                <option value="tech advisor">Tech Advisor</option>
+                <option value="center lead">Center Lead</option>
+                <option value="infra head">Infra Head</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Priority</label>
+            <select name="priority" required>
+                <option value="High">High</option>
+                <option value="Medium">Medium</option>
+                <option value="Low">Low</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Question Summary</label>
+            <input type="text" name="question" placeholder="Brief system query summary..." required>
+        </div>
+        <div class="form-group">
+            <label>Detailed Question Description</label>
+            <textarea name="description" rows="5" placeholder="Detail out the inquiry framework..." required></textarea>
+        </div>
+        <button type="submit">Record and Submit Question</button>
+    </form>
+</div>
+</body>
+</html>

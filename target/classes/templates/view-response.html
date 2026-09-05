@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Query Response Details</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .navbar { background: #343a40; padding: 15px; margin: -20px -20px 20px -20px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .navbar a { color: #f8f9fa; text-decoration: none; margin-left: 20px; }
+        .container { background: white; max-width: 700px; margin: 0 auto; padding: 30px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .form-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        .form-control-static { background: #f8f9fa; padding: 10px 12px; border: 1px solid #ced4da; border-radius: 4px; color: #495057; min-height: 20px; }
+        .badge { display: inline-block; padding: 5px 10px; border-radius: 4px; font-size: 0.9em; font-weight: bold; color: white; }
+        .bg-high { background-color: #dc3545; }
+        .bg-pending { background-color: #ffc107; color: black; }
+        .bg-closed { background-color: #28a745; }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div><strong>Query Response Viewer</strong></div>
+    <div><a href="/report">Back to My Queries</a><a href="/home">Home Dashboard</a></div>
+</div>
+
+<div class="container">
+    <h2>Query Ticket Details & Admin Response</h2>
+    
+    <div class="form-group">
+        <label>Target Advisor / Department</label>
+        <div class="form-control-static" th:text="${query.targetType}">Target</div>
+    </div>
+
+    <div class="form-group">
+        <label>Priority Level</label>
+        <div>
+            <span class="badge bg-high" th:text="${query.priority}">High</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Question Summary</label>
+        <div class="form-control-static" th:text="${query.question}">Question</div>
+    </div>
+
+    <div class="form-group">
+        <label>Detailed Question Description</label>
+        <div class="form-control-static" th:text="${query.description}" style="white-space: pre-line;">Description</div>
+    </div>
+
+    <hr style="border: 0; border-top: 1px solid #dee2e6; margin: 25px 0;">
+
+    <div class="form-group">
+        <label>Current Status</label>
+        <div>
+            <span class="badge bg-pending" th:classappend="${query.status == 'closed'} ? 'bg-closed' : ''" th:text="${query.status}">Pending</span>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Authorized Responder Name</label>
+        <div class="form-control-static" th:text="${query.responder != null ? query.responder : 'Awaiting Response...'}">Responder Name</div>
+    </div>
+
+    <div class="form-group">
+        <label>Admin Response Description</label>
+        <div class="form-control-static" th:text="${query.responseDescription != null ? query.responseDescription : 'No response provided yet.'}" style="white-space: pre-line;">Response Description</div>
+    </div>
+
+    <div th:if="${query.status == 'on hold'}">
+        <div class="form-group">
+            <label>Reason for Hold Statement</label>
+            <div class="form-control-static" th:text="${query.holdReason}">Hold Reason</div>
+        </div>
+        <div class="form-group">
+            <label>Hold Review Target Date</label>
+            <div class="form-control-static" th:text="${query.holdDate}">Hold Date</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

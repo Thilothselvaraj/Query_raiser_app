@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dashboard</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; }
+        .navbar { background: #343a40; padding: 15px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .navbar a { color: #f8f9fa; text-decoration: none; margin-left: 20px; font-weight: 500; }
+        .navbar a:hover { color: #ffc107; }
+        .content { padding: 40px; text-align: center; }
+        .welcome-card { background: white; display: inline-block; padding: 40px; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div><strong>Query Raise Portal</strong></div>
+    <div>
+        <!-- Check type to display correct workflow link -->
+        <a th:if="${user.userType == 'Employee'}" href="/employee">Employee Module</a>
+        <a th:if="${user.userType == 'Student'}" href="/student">Student Module</a>
+        <a th:if="${user.userType != 'Admin'}" href="/report">My Tracked Queries</a>
+        <!-- Admin-only response management link -->
+        <a th:if="${user.userType == 'Admin'}" href="/response">Manage Responses</a>
+        
+        <a href="/logout" style="color: #dc3545;">Logout</a>
+    </div>
+</div>
+<div class="content">
+    <div class="welcome-card">
+        <h1>Welcome, <span th:text="${user.username}">User</span>!</h1>
+        <p>Role: <span th:text="${user.userType}">Role</span></p>
+        <p>Use the navigation panel above to easily raise, track, or resolve organizational queries.</p>
+    </div>
+</div>
+</body>
+</html>

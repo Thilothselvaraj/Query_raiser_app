@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Response / Replay Module</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .navbar { background: #343a40; padding: 15px; margin: -20px -20px 20px -20px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .navbar a { color: #f8f9fa; text-decoration: none; margin-left: 20px; }
+        .query-card { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .badge { display: inline-block; padding: 4px 8px; border-radius: 4px; font-size: 0.85em; font-weight: bold; color: white; }
+        .bg-high { background-color: #dc3545; }
+        .bg-pending { background-color: #ffc107; color: black; }
+        .form-inline { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; border-top: 1px dashed #ccc; padding-top: 15px; }
+        input, textarea, select { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { background: #28a745; color: white; border: none; padding: 10px 15px; border-radius: 4px; cursor: pointer; font-weight: bold; }
+    </style>
+    <script>
+        function checkStatusChange(selectEl, queryId) {
+            var holdFields = document.getElementById("hold-fields-" + queryId);
+            if(selectEl.value === "on hold") {
+                holdFields.style.display = "block";
+            } else {
+                holdFields.style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+<div class="navbar">
+    <div><strong>Response & Replay Resolution Engine</strong></div>
+    <div><a href="/home">Home Dashboard</a></div>
+</div>
+<h2>Manage Dynamic Query Interaction Actions</h2>
+<div th:each="q : ${queries}" class="query-card">
+    <h3>[<span th:text="${q.raiserType}">Type</span> Ticket] - <span th:text="${q.question}">Question</span></h3>
+    <p><strong>Raised By:</strong> <span th:text="${q.raiserName}">Name</span> | <strong>Priority:</strong> <span class="badge bg-high" th:text="${q.priority}">High</span></p>
+    <p><strong>Detailed Inquiry:</strong> <span th:text="${q.description}">Description</span></p>
+    <p><strong>Current Status:</strong> <span class="badge bg-pending" th:text="${q.status}">Pending</span></p>
+
+    <!-- Authority Response Action Form Interface -->
+    <form th:action="@{/submitResponse}" method="post" class="form-inline">
+        <input type="hidden" name="queryId" th:value="${q.id}">
+        <div>
+            <label>Authorized Responder Name</label>
+            <input type="text" name="responder" th:value="${q.responder}" placeholder="HR Name / Authority Lead" required>
+            
+            <label>Resolution Action Status Selection</label>
+            <select name="status" th:id="'status-' + ${q.id}" th:onchange="'checkStatusChange(this, ' + ${q.id} + ')' " required>
+                <option value="closed" th:selected="${q.status == 'closed'}">Closed / Resolved</option>
+                <option value="on hold" th:selected="${q.status == 'on hold'}">On Hold</option>
+            </select>
+        </div>
+        <div>
+            <label>Detailed Response/Resolution Description</label>
+            <textarea name="responseDescription" rows="3" th:text="${q.responseDescription}" placeholder="Write resolution details..." required></textarea>
+            
+            <div th:id="'hold-fields-' + ${q.id}" th:style="${q.status == 'on hold'} ? 'display:block' : 'display:none'">
+                <label>Reason for Hold Statement</label>
+                <input type="text" name="holdReason" th:value="${q.holdReason}" placeholder="Reason for putting ticket on hold">
+                <label>Hold Review Target Date</label>
+                <input type="text" name="holdDate" th:value="${q.holdDate}" placeholder="YYYY-MM-DD">
+            </div>
+        </div>
+        <div style="grid-column: span 2;">
+            <button type="submit">Apply Response Changes</button>
+        </div>
+    </form>
+</div>
+</body>
+</html>

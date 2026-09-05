@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Master Audit Report Module</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 20px; }
+        .navbar { background: #343a40; padding: 15px; margin: -20px -20px 20px -20px; display: flex; justify-content: space-between; align-items: center; color: white; }
+        .navbar a { color: #f8f9fa; text-decoration: none; margin-left: 20px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; background: white; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        th, td { padding: 12px 15px; border: 1px solid #ddd; text-align: left; }
+        th { background-color: #4a90e2; color: white; }
+        tr:nth-child(even) { background-color: #f8f9fa; }
+        .status-closed { color: green; font-weight: bold; }
+        .status-hold { color: orange; font-weight: bold; }
+        .status-pending { color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+<div class="navbar">
+    <div><strong>Master Audit Intelligence Engine</strong></div>
+    <div><a href="/home">Home Dashboard</a></div>
+</div>
+<h2>Consolidated System Query Logs Registry</h2>
+<table>
+    <thead>
+    <tr>
+        <th>Date</th>
+        <th>User Source</th>
+        <th>Question Summary</th>
+        <th>Priority</th>
+        <th>Detailed Question Description</th>
+        <th>Response Link Token</th>
+        <th>Resolution Action Status</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="q : ${queries}">
+        <td th:text="${q.dateRaised}">Date</td>
+        <td>
+            <span th:text="${q.raiserType}">Type</span>: <span th:text="${q.raiserName}">Name</span>
+        </td>
+        <td th:text="${q.question}">Question</td>
+        <td th:text="${q.priority}">Priority</td>
+        <td th:text="${q.description}">Description</td>
+        <td>
+            <!-- Dynamic interactive resolution link assignment rule -->
+           <a th:href="@{'/viewResponse/' + ${q.id}}" class="btn-view">View Response Details</a>
+            <span th:if="${q.status == 'Pending'}" style="color:#aaa; font-style: italic;">Empty Initially</span>
+        </td>
+        <td>
+            <span th:text="${q.status}" th:class="${q.status == 'closed' ? 'status-closed' : (q.status == 'on hold' ? 'status-hold' : 'status-pending')}">Status</span>
+            <div th:if="${q.status == 'on hold'}" style="font-size: 0.8em; color: #555;">
+                Reason: <span th:text="${q.holdReason}">Reason</span><br>
+                Till: <span th:text="${q.holdDate}">Date</span>
+            </div>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

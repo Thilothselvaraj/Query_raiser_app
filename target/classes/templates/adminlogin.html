@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Admin Login Page</title>
+<style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; }
+    h2 { text-align: center; color: #333; margin-bottom: 20px; }
+    .form-group { margin-bottom: 15px; }
+    label { display: block; margin-bottom: 5px; color: #666; font-weight: 600; }
+    input[type="text"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+    button { width: 100%; background: #4a90e2; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-size: 1em; font-weight: bold; }
+    button:hover { background: #357abd; }
+    .error { color: #e53e3e; text-align: center; margin-bottom: 10px; font-size: 0.9em; }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Admin Login</h2>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    
+    <!-- Changed to a standard Thymeleaf action form posting to /admin-login -->
+    <form th:action="@{/admin-login}" method="post">
+        <div class="form-group">
+            <label>Username / Email Id</label>
+            <input type="text" name="adminloginid" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <button type="submit">Login</button>
+    </form>
+</div>
+</body>
+</html>

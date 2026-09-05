@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Query Raise App - Login</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; background-color: #f4f6f9; margin: 0; padding: 0; display: flex; justify-content: center; align-items: center; height: 100vh; }
+        .container { background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 350px; }
+        h2 { text-align: center; color: #333; margin-bottom: 20px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; color: #666; font-weight: 600; }
+        input[type="text"], input[type="password"] { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        .captcha-box { background: #e2e8f0; font-weight: bold; text-align: center; padding: 8px; letter-spacing: 5px; font-size: 1.2em; border-radius: 4px; margin-bottom: 10px; color: #2d3748; }
+        button { width: 100%; background: #4a90e2; color: white; border: none; padding: 12px; border-radius: 4px; cursor: pointer; font-size: 1em; font-weight: bold; }
+        button:hover { background: #357abd; }
+        .error { color: #e53e3e; text-align: center; margin-bottom: 10px; font-size: 0.9em; }
+        .links { text-align: center; margin-top: 15px; font-size: 0.9em; }
+        .links a { color: #4a90e2; text-decoration: none; }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>System Login</h2>
+    <div th:if="${error}" class="error" th:text="${error}"></div>
+    <form th:action="@{/login}" method="post">
+        <div class="form-group">
+            <label>Username / Email Id</label>
+            <input type="text" name="loginId" required>
+        </div>
+        <div class="form-group">
+            <label>Password</label>
+            <input type="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label>Security Captcha Code</label>
+            <div class="captcha-box" th:text="${captcha}">000000</div>
+            <input type="text" name="captchaInput" placeholder="Enter Captcha Code Here" required>
+        </div>
+        <button type="submit">Authentication Login</button>
+    </form>
+    <div class="links">
+        Don't have an account? <a href="/register">Register Here</a>
+        <br>
+        <a th:href="@{/admin-login}">Admin Login</a>
+    </div>
+</div>
+</body>
+</html>
